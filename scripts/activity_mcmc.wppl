@@ -3,40 +3,28 @@
 var quiet_average = 3.5
 var noisy_average = 5.5
 
-var model = function(noise_sensor_data, motion_sensor_data){
-	//add motion_sensor_data as a parameter to implement motion
+var motion_active_average = 0.3
+var motion_inactive_average = 0.05
 
-	//Each sample branches to either true or false for room_is_active
-	var room_is_active = flip(0.5) //flip parameter could be determined by other things, such as time of day. More likely to be active in day, etc.
+var model = function(noise_sensor_data, motion_sensor_data){
+
+	var room_is_active = flip(0.5) 
 	
 	//creation of the model
-	var noise_mean = room_is_active ? noisy_average : quiet_average //Mean noise levels in a room that is active vs a room that is not active
-	var noise_model = Gaussian({mu: noise_mean, sigma: 2}) //Model the noise in the room as a Gaussian with the mean chosen above
-	//^^^ std deviation sigma chosen how?
-	// notice that a lower sigma value increases the confidence of the model
+	var noise_mean = room_is_active ? noisy_average : quiet_average 
+	var noise_model = Gaussian({mu: noise_mean, sigma: 2}) 
 
-	//map each datum to score, which gives the log-probability of the data value
-	//logProbs is a list of the log-probabilities for the data values
 	var logProbsNoise = map(function(d) { return noise_model.score(d) },
 		noise_sensor_data)
-	 // log p(d | m)
 
-	//factoring by the sum of the logProbs factors by the combined probability (sum of log of probs is the same as product of probs)
 	factor(sum(logProbsNoise))
-	// condition(sensor_data == noise) <-- this is the analogue of factor for a discrete distribution
-	// continous values for noise levels suggest a continous distribution would be more applicable in this case
 
-	//The above few lines can be reapplied for other parameters: perhaps, motion? for example...
-
-	//assume that motion is a binary state --> either it is detected in the room (1) or it is not (0)
-	//This can be modeled with a bernoulli distribution with a probability dependent upon the activity of the room
-	var motion_prob = room_is_active ? 0.3 : 0.05
+	var motion_prob = room_is_active3 ? motion_active_average : motion_inactive_average
 	var motion_model = Bernoulli({p: motion_prob})
 
 	var logProbsMotion = map(function(d) { return motion_model.score(d) },
 		motion_sensor_data)
 
-	//condition on the bernoulli model accepting the data
 	factor(sum(logProbsMotion))
 
 	return room_is_active
@@ -60,9 +48,6 @@ var setupData = function(input_data){
 var data_arrays = setupData(process.argv)
 var noise_sensor_data = data_arrays.noise_sensor_data
 var motion_sensor_data = data_arrays.motion_sensor_data
-
-// var noise_sensor_data [8, 8, 8, 8, 8]
-// var motion_sensor_data = [true, true, true, true, true]
 
 var opts = {method: "MCMC", samples: 10000, burn: 5000, verbose: true}
 Infer(opts, function() { model(noise_sensor_data, motion_sensor_data) } )
