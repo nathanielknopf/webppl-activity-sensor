@@ -7,10 +7,10 @@
 <p>There are two main ways to run the device. Once the device has been set up with the Arduino plugged into the Raspberry Pi, the Raspberry Pi can either run the webppl scripts locally, or export data to a server on the local network which will run the webppl script more quickly.</p>
 
 <p>To run the webppl scripts locally, run the serialmanager.js file like so:
-"$ node serialmanager.js <serial port of Arduino>"</p>
+"$ node serialmanager.js (serial port of Arduino)"</p>
 
 <p>To run them on a server, first make sure that there is a copy of the activity_mcmc.wppl script in the same folder as the server.js script on the server computer. Then run the server.js file on your desired server computer, like so:
-"$ node server.js <server's local IP address> <port>"
+"$ node server.js (server's local IP address) (port)"
 Then run the client.js script on the Raspberry Pi like so:
-"$ node client.js <serial port of Arduino> <server's local IP address> <port>"
+"$ node client.js (serial port of Arduino) (server's local IP address) (port)"
 </p>
