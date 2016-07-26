@@ -1,16 +1,21 @@
-<h1>Activity Sensor for Raspberry Pi and Arduino using webppl</h1>
+#Activity Sensor for Raspberry Pi and Arduino using webppl
 
-<p>This is a simple embedded device using a noise sensor and two PIR motion sensors on an Arduino connected to a Raspberry Pi running a webppl script. The device determines whether or not there are (active) people within the proximity of the sensors using a webppl model.</p>
+##About
+This is a simple embedded device using a noise sensor and two PIR motion sensors on an Arduino connected to a Raspberry Pi running a webppl script. The device determines whether or not there are (active) people within the proximity of the sensors using a webppl model.
 
-<h2>Running the Device</h2>
+##Running the device
 
-<p>There are two main ways to run the device. Once the device has been set up with the Arduino plugged into the Raspberry Pi, the Raspberry Pi can either run the webppl scripts locally, or export data to a server on the local network which will run the webppl script more quickly.</p>
+There are two main ways to run the device. Once the device has been set up with the Arduino plugged into the Raspberry Pi, the Raspberry Pi can either run the webppl scripts locally, or export data to a server on the local network which will run the webppl script more quickly.
 
-<p>To run the webppl scripts locally, run the serialmanager.js file like so:
-"$ node serialmanager.js (serial port of Arduino)"</p>
+####Locally
+To run the webppl scripts locally, run the serialmanager.js file like so:
+`node serialmanager.js (serial port of Arduino)`
 
-<p>To run them on a server, first make sure that there is a copy of the activity_mcmc.wppl script in the same folder as the server.js script on the server computer. Then run the server.js file on your desired server computer, like so:
-"$ node server.js (server's local IP address) (port)"
+####With Server
+To run them on a server, first make sure that there is a copy of the activity_mcmc.wppl script in the same folder as the server.js script on the server computer. Then run the server.js file on your desired server computer, like so:
+`$ node server.js (Server's IP Address) (Port server should listen on)`
 Then run the client.js script on the Raspberry Pi like so:
-"$ node client.js (serial port of Arduino) (server's local IP address) (port)"
-</p>
+`$ node client.js (Serial port of Arduino) (Server's IP address) (Port server is listening on)`
+
+##Help
+Please email knopf@mit.edu with any questions about this repo
